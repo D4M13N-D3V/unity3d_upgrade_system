@@ -13,7 +13,6 @@ namespace Damien.UpgradeSystem
 {
     public class UpgradeSystem : MonoBehaviour
     {
-     
         #region Private Variables
         private UpgradeController _upgradeController;
         private StatisticController _statisticController;
