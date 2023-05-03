@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace Damien.UpgradeSystem
@@ -20,8 +21,7 @@ namespace Damien.UpgradeSystem
         private StatisticController _statisticController;
         #endregion
 
-        #region Configuration
-        #endregion
+        public UnityEvent OnUpgradeChange;
 
         public void Save()
         {
@@ -42,11 +42,13 @@ namespace Damien.UpgradeSystem
         public void GiveUpgrade(string upgradeName)
         {
             _upgradeController.GiveUpgrade(upgradeName);
+            OnUpgradeChange.Invoke();
         }
 
         public void RemoveUpgrade(string upgradeName)
         {
             _upgradeController.RemoveUpgrade(upgradeName);
+            OnUpgradeChange.Invoke(); 
         }
 
         public Dictionary<Statistic,int> GetStatistics()
