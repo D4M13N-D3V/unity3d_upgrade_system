@@ -22,6 +22,10 @@ namespace Damien.UpgradeSystem
         #endregion
 
         public UnityEvent OnUpgradeChange;
+        public UnityEvent<string> OnUpgradeAdded;
+        public UnityEvent<string> OnUpgradeRemoved;
+        public UnityEvent<string,int,int> OnBuff;
+        public UnityEvent<string,int,int> OnDebuff;
 
         public void Save()
         {
@@ -43,12 +47,14 @@ namespace Damien.UpgradeSystem
         {
             _upgradeController.GiveUpgrade(upgradeName);
             OnUpgradeChange.Invoke();
+            OnUpgradeAdded.Invoke(upgradeName);
         }
 
         public void RemoveUpgrade(string upgradeName)
         {
             _upgradeController.RemoveUpgrade(upgradeName);
-            OnUpgradeChange.Invoke(); 
+            OnUpgradeChange.Invoke();
+            OnUpgradeRemoved.Invoke(upgradeName); 
         }
 
         public Dictionary<Statistic,int> GetStatistics()
@@ -63,13 +69,13 @@ namespace Damien.UpgradeSystem
 
         public async void Buff(string statisticName, int amount, int timeInMs)
         {
-            var statistic = _statisticController.GetStatistic(statisticName);
+            OnBuff.Invoke(statisticName, amount, timeInMs);
             await _statisticController.Buff(statisticName, amount, timeInMs);
         }
 
         public async void Debuff(string statisticName, int amount, int timeInMs)
         {
-            var statistic = _statisticController.GetStatistic(statisticName);
+            OnDebuff.Invoke(statisticName, amount, timeInMs);
             await _statisticController.Debuff(statisticName, amount, timeInMs);
         }
 
