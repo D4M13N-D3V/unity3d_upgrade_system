@@ -24,8 +24,10 @@ namespace Damien.UpgradeSystem
         public UnityEvent OnUpgradeChange;
         public UnityEvent<string> OnUpgradeAdded;
         public UnityEvent<string> OnUpgradeRemoved;
-        public UnityEvent<string,int,int> OnBuff;
-        public UnityEvent<string,int,int> OnDebuff;
+        public UnityEvent<string, int, int> OnBuffAdded;
+        public UnityEvent<string, int, int> OnBuffRemoved;
+        public UnityEvent<string, int, int> OnDebuffAdded;
+        public UnityEvent<string, int, int> OnDebuffRemoved;
 
         public void Save()
         {
@@ -69,14 +71,16 @@ namespace Damien.UpgradeSystem
 
         public async void Buff(string statisticName, int amount, int timeInMs)
         {
-            OnBuff.Invoke(statisticName, amount, timeInMs);
+            OnBuffAdded.Invoke(statisticName, amount, timeInMs);
             await _statisticController.Buff(statisticName, amount, timeInMs);
+            OnBuffRemoved.Invoke(statisticName, amount, timeInMs);
         }
 
         public async void Debuff(string statisticName, int amount, int timeInMs)
         {
-            OnDebuff.Invoke(statisticName, amount, timeInMs);
+            OnDebuffAdded.Invoke(statisticName, amount, timeInMs);
             await _statisticController.Debuff(statisticName, amount, timeInMs);
+            OnDebuffRemoved.Invoke(statisticName, amount, timeInMs);
         }
 
         private void Start()
