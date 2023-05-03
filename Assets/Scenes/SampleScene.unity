@@ -5644,7 +5644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0051275827}
+  m_AnchoredPosition: {x: 0, y: 0.0050792685}
   m_SizeDelta: {x: 0, y: 744.9}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1690386773
@@ -6036,6 +6036,18 @@ MonoBehaviour:
     _currentUpgrades:
     - {fileID: 11400000, guid: 04d8683eaa4550f46bdf503218106ab3, type: 2}
   OnUpgradeChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpgradeAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpgradeRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBuff:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDebuff:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1829584587

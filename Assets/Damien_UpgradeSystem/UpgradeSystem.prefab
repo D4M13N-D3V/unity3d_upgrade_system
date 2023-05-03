@@ -45,12 +45,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeController:
-    _upgrades:
-    - {fileID: 11400000, guid: 04d8683eaa4550f46bdf503218106ab3, type: 2}
-    - {fileID: 11400000, guid: 04d8683eaa4550f46bdf503218106ab3, type: 2}
-    - {fileID: 11400000, guid: 04d8683eaa4550f46bdf503218106ab3, type: 2}
-    _currentUpgrades:
-    - {fileID: 11400000, guid: 04d8683eaa4550f46bdf503218106ab3, type: 2}
+    _upgrades: []
+    _currentUpgrades: []
   OnUpgradeChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 41e14f40b915ca743a3dffd18ffc65ab, type: 3}
+        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
+        m_MethodName: set_name
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  OnUpgradeAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpgradeRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBuff:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDebuff:
     m_PersistentCalls:
       m_Calls: []
