@@ -13,15 +13,7 @@ namespace Damien.UpgradeSystem
 {
     public class UpgradeSystem : MonoBehaviour
     {
-        #region Singleton
-        public static UpgradeSystem Instance;
-        public void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-        }
-        #endregion
-
+     
         #region Private Variables
         private UpgradeController _upgradeController;
         private StatisticController _statisticController;
@@ -29,6 +21,22 @@ namespace Damien.UpgradeSystem
 
         #region Configuration
         #endregion
+
+        public void Save()
+        {
+            string saveContent = JsonUtility.ToJson(_upgradeController.GetCurrentUpgrades());
+            System.IO.File.WriteAllText(Application.persistentDataPath + "/UpgradeSystemSave.data", saveContent);
+        }
+
+        public List<Upgrade> GetAllUpgrades()
+        {
+            return _upgradeController.GetAllUpgrades().ToModel();
+        }
+
+        public List<Upgrade> GetCurrentUpgrades()
+        {
+            return _upgradeController.GetCurrentUpgrades().ToModel();
+        }
 
         public void GiveUpgrade(string upgradeName)
         {
@@ -40,42 +48,34 @@ namespace Damien.UpgradeSystem
             _upgradeController.RemoveUpgrade(upgradeName);
         }
 
-        public void GetStatistics()
+        public Dictionary<Statistic,int> GetStatistics()
         {
-            _statisticController.GetCurrentStatisticValues();
+            return _statisticController.GetCurrentStatisticValues().ToModel() ;
         }
 
-        public void GetStatistic(string statisticName)
+        public int GetStatisticValue(string statisticName)
         {
-            _statisticController.GetCurrentStatisticValue(statisticName);
+           return _statisticController.GetCurrentStatisticValue(statisticName);
         }
 
         public async void Buff(string statisticName, int amount, int timeInMs)
         {
             var statistic = _statisticController.GetStatistic(statisticName);
-            await _statisticController.Buff(statistic, amount, timeInMs);
-        }
-
-        public async void Buff(Statistic statistic, int amount, int timeInMs)
-        {
-            await _statisticController.Buff(statistic, amount, timeInMs);
+            await _statisticController.Buff(statisticName, amount, timeInMs);
         }
 
         public async void Debuff(string statisticName, int amount, int timeInMs)
         {
             var statistic = _statisticController.GetStatistic(statisticName);
-            await _statisticController.Debuff(statistic, amount, timeInMs);
-        }
-
-        public async void Debuff(Statistic statistic, int amount, int timeInMs)
-        {
-            await _statisticController.Debuff(statistic, amount, timeInMs);
+            await _statisticController.Debuff(statisticName, amount, timeInMs);
         }
 
         private void Start()
         {
             _upgradeController = new UpgradeController();
             _statisticController = new StatisticController(_upgradeController);
+            _upgradeController.Initialize();
+            _statisticController.Initialize();
         }
     }
 }

@@ -10,52 +10,63 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem
 {
-    public class StatisticController : IStatisticController
+    [System.Serializable]
+    internal class StatisticController
     {
         private readonly UpgradeController _upgradeController;
-        private readonly List<Statistic> _statistics;
+        private List<ScriptableObjects.Statistic> _statistics;
 
-        public Dictionary<Statistic, int> _debuffs = new Dictionary<Statistic, int>();
-        public Dictionary<Statistic, int> _buffs = new Dictionary<Statistic, int>();
+        [SerializeField]
+        internal Dictionary<string, int?> _debuffs = new Dictionary<string, int?>();
+        [SerializeField]
+        internal Dictionary<string, int?> _buffs = new Dictionary<string, int?>();
 
-        public StatisticController(UpgradeController upgradeController)
+        internal StatisticController(UpgradeController upgradeController)
         {
             _upgradeController = upgradeController;
         }
 
-        public async Task Buff(Statistic statistic, int amount, int timeInMs)
+        internal async Task Buff(string statisticName, int amount, int timeInMs)
         {
-            _buffs.Add(statistic, amount);
+            GetStatistic(statisticName);
+            _buffs.Add(statisticName, amount);
             await Task.Delay(30000);
-            _buffs.Remove(statistic);
+            _buffs.Remove(statisticName);
         }
 
-        public async Task Debuff(Statistic statistic, int amount, int timeInMs)
+        internal async Task Debuff(string statisticName, int amount, int timeInMs)
         {
-            _buffs.Add(statistic, amount);
+            GetStatistic(statisticName);
+            _buffs.Add(statisticName, amount);
             await Task.Delay(30000);
-            _buffs.Remove(statistic);
+            _buffs.Remove(statisticName);
         }
 
-        public int GetCurrentStatisticValue(string statisticName)
+        internal int GetCurrentStatisticValue(string statisticName)
         {
-            var sum = _upgradeController.GetUpgrades()
-                .Where(upgrade => upgrade.Statistics.Any(statistic => statistic.Key.Name == statisticName))
-                .SelectMany(upgrade => upgrade.Statistics).Sum(x => x.Value);
+            var sum = _upgradeController.GetCurrentUpgrades()
+                .Where(upgrade => upgrade.Statistics.Any(statistic => statistic.Name == statisticName))
+                .SelectMany(upgrade => upgrade.Statistics).Sum(x => x.Amount);
             return sum;
         }
 
-        public Dictionary<Statistic, int> GetCurrentStatisticValues()
+        internal Dictionary<ScriptableObjects.Statistic, int> GetCurrentStatisticValues()
         {
-            var statisticResults = _upgradeController.GetUpgrades()
-               .SelectMany(obj => obj.Statistics)
-               .GroupBy(statistic => statistic.Key.Name)
-               .ToDictionary(group => GetStatistic(group.Key), group => group.Sum(statistic => statistic.Value)
-               + _buffs.Where(x => x.Key.Name == group.Key).Sum(x => x.Value) - _debuffs.Where(x => x.Key.Name == group.Key).Sum(x => x.Value));
+            var upgrades = _upgradeController.GetCurrentUpgrades();
+            var statisticResults = upgrades
+    .SelectMany(obj => obj.Statistics)
+    .GroupBy(statistic => statistic.Name)
+    .ToDictionary(
+        group => GetStatistic(group.Key),
+        group => group.Sum(statistic => statistic.Amount)
+                 + _buffs.Where(x => x.Key == group.Key).Sum(x => x.Value ?? 0)
+                 - _debuffs.Where(x => x.Key == group.Key).Sum(x => x.Value ?? 0)
+    );
+
             return statisticResults;
         }
 
-        public Statistic GetStatistic(string statisticName)
+        internal ScriptableObjects.Statistic GetStatistic(string statisticName)
         {
             var statistic = _statistics.FirstOrDefault(statistic => statistic.Name == statisticName);
             if (statistic == null)
@@ -63,10 +74,11 @@ namespace Damien.UpgradeSystem
             return statistic;
         }
 
-        public void Initialize()
+
+        internal void Initialize()
         {
-            var statistics = (Statistic[])Resources.FindObjectsOfTypeAll(typeof(Statistic));
-            _statistics.ToList();
+            var statistics = (ScriptableObjects.Statistic[])Resources.FindObjectsOfTypeAll(typeof(ScriptableObjects.Statistic));
+            _statistics = statistics.ToList();
         }
     }
 

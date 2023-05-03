@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public class StatisticRequirment : Requirment
+    [System.Serializable]
+    internal class StatisticRequirment : Requirment
     {
+        [SerializeField]
         public Statistic Statistic;
     }
 }

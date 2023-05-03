@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.Interfaces
 {
-    public interface IUpgradeController
+    internal interface IUpgradeController
     {
         void Initialize();
         bool HasUpgrade(string upgradeName);
         void GiveUpgrade(string upgradeName);
         void RemoveUpgrade(string upgradeName);
-        List<Upgrade> GetUpgrades();
-        Upgrade GetUpgrade(string upgradeName);
+        List<ScriptableObjects.Upgrade> GetCurrentUpgrades();
+        ScriptableObjects.Upgrade GetUpgrade(string upgradeName);
     }
 }

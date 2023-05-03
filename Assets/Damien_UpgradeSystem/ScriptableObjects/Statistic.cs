@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public class Statistic : UpgradeSystemEntity
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "Statistic", menuName = "Damien/Upgrade System/Create Statistic")]
+    internal class Statistic : UpgradeSystemEntity
     {
     }
 }

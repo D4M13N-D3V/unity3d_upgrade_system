@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public class UpgradeRequirment : Requirment
+    [System.Serializable]
+    internal class UpgradeRequirment : Requirment
     {
+        [SerializeField]
         public Upgrade Upgrade;
     }
 }

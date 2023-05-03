@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public abstract class UpgradeSystemEntity:ScriptableObject
+    internal abstract class UpgradeSystemEntity:ScriptableObject
     {
         public string Name;
         public string Description;

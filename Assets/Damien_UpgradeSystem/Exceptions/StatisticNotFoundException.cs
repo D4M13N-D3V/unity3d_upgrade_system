@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.Exceptions
 {
-    public class StatisticNotFoundException : Exception
+    internal class StatisticNotFoundException : Exception
     {
         public string ProvidedUpgradeName;
 

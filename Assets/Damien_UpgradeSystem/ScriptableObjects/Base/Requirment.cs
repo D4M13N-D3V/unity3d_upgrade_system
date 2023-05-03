@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public abstract class Requirment : ScriptableObject
+    [CreateAssetMenu(fileName = "Statistic", menuName = "Damien/Upgrade System/Create Upgrade Requirment")]
+    internal abstract class Requirment : ScriptableObject
     {
         public int Minimum;
         public int Maximum;

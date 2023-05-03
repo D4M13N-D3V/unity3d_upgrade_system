@@ -8,19 +8,22 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem
 {
-    public class UpgradeController : IUpgradeController
+    [System.Serializable]
+    public class UpgradeController
     {
-        private readonly List<Upgrade> _upgrades;
-        private readonly List<Upgrade> _currentUpgrades = new List<Upgrade>();
+
+        [SerializeField]
+        private List<ScriptableObjects.Upgrade> _upgrades;
+        [SerializeField]
+        private List<ScriptableObjects.Upgrade> _currentUpgrades = new List<ScriptableObjects.Upgrade>();
         public UpgradeController()
         {
-            Initialize();
         }
 
         public void GiveUpgrade(string upgradeName)
         {
-            var upgrade = GetUpgrade(upgradeName);
-            _currentUpgrades.Remove(upgrade);
+            var upgrade = InternalGetUpgrade(upgradeName);
+            _currentUpgrades.Add(upgrade);
         }
 
         public bool HasUpgrade(string upgradeName)
@@ -30,13 +33,13 @@ namespace Damien.UpgradeSystem
 
         public void Initialize()
         {
-            var upgrades = (Upgrade[])Resources.FindObjectsOfTypeAll(typeof(Upgrade));
-            _upgrades.ToList();
+            var upgrades = (ScriptableObjects.Upgrade[])Resources.FindObjectsOfTypeAll(typeof(ScriptableObjects.Upgrade));
+            _upgrades = upgrades.ToList();
         }
 
         public void RemoveUpgrade(string upgradeName)
         {
-            var upgrade = GetUpgrade(upgradeName);
+            var upgrade = InternalGetUpgrade(upgradeName);
             var playerUpgrade = _currentUpgrades.FirstOrDefault(x => x.Name == upgrade.Name);
             if (playerUpgrade == null)
                 throw new UpgradeNotFoundException(upgradeName, "Could not remove upgrade because it is not in the current upgrades list.");
@@ -48,12 +51,24 @@ namespace Damien.UpgradeSystem
             var upgrade = _upgrades.FirstOrDefault(upgrade => upgrade.Name == upgradeName);
             if (upgrade == null)
                 throw new UpgradeNotFoundException(upgradeName, "Could not find a upgrade matching the name that was provided.");
+            return upgrade.ToModel();
+        }
+        internal ScriptableObjects.Upgrade InternalGetUpgrade(string upgradeName)
+        {
+            var upgrade = _upgrades.FirstOrDefault(upgrade => upgrade.Name == upgradeName);
+            if (upgrade == null)
+                throw new UpgradeNotFoundException(upgradeName, "Could not find a upgrade matching the name that was provided.");
             return upgrade;
         }
 
-        public List<Upgrade> GetUpgrades()
+        public List<Upgrade> GetCurrentUpgrades()
         {
-            return _currentUpgrades;
+            return _currentUpgrades.ToModel();
+        }
+
+        public List<Upgrade> GetAllUpgrades()
+        {
+            return _upgrades.ToModel();
         }
     }
 

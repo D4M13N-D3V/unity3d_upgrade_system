@@ -4,8 +4,18 @@ using UnityEngine;
 
 namespace Damien.UpgradeSystem.ScriptableObjects
 {
-    public class Upgrade : UpgradeSystemEntity
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "Upgrade", menuName = "Damien/Upgrade System/Create Upgrade")]
+    internal class Upgrade : UpgradeSystemEntity
     {
-        public Dictionary<Statistic, int> Statistics = new Dictionary<Statistic, int>();
+        [SerializeField]
+        public List<UpgradeStatistic> Statistics = new List<UpgradeStatistic>();
+    }
+
+    [System.Serializable]
+    internal class UpgradeStatistic
+    {
+        public Statistic Statistic;
+        public int Amount;
     }
 }
