@@ -37,9 +37,9 @@ namespace Damien.UpgradeSystem
         internal async Task Debuff(string statisticName, int amount, int timeInMs)
         {
             GetStatistic(statisticName);
-            _buffs.Add(statisticName, amount);
+            _debuffs.Add(statisticName, amount);
             await Task.Delay(30000);
-            _buffs.Remove(statisticName);
+            _debuffs.Remove(statisticName);
         }
 
         internal int GetCurrentStatisticValue(string statisticName)
@@ -65,6 +65,17 @@ namespace Damien.UpgradeSystem
                     results[statistic.Statistic.Name] += statistic.Amount;
                 }
             }
+
+            foreach (var debuff in _debuffs)
+            {
+                results[debuff.Key] -= (int)debuff.Value;
+            }
+
+            foreach (var buff in _buffs)
+            {
+                results[buff.Key] += (int)buff.Value;
+            }
+
             var statisticResults = results.ToDictionary(result => GetStatistic(result.Key), result => result.Value);
             return statisticResults.ToModel();
         }

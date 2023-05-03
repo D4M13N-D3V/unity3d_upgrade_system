@@ -17,7 +17,7 @@ MonoBehaviour:
   Icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   Requirments: []
   Statistics:
-  - Statistic: {fileID: 11400000, guid: 9b1e237dd85c093419762cf7908df2ab, type: 2}
-    Amount: 100
   - Statistic: {fileID: 11400000, guid: 9afed53edc6989f42b14f0dab74b27be, type: 2}
+    Amount: 100
+  - Statistic: {fileID: 11400000, guid: 9b1e237dd85c093419762cf7908df2ab, type: 2}
     Amount: 10

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatSystemTestMenuITem : MonoBehaviour
+public class DebugMenuItem : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI Text;
     public Image Image;
