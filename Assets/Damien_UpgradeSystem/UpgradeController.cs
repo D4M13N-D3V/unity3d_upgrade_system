@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Damien.UpgradeSystem
 {
     [System.Serializable]
-    public class UpgradeController
+    public class UpgradeController 
     {
 
         [SerializeField]
@@ -22,8 +22,8 @@ namespace Damien.UpgradeSystem
 
         public void GiveUpgrade(string upgradeName)
         {
-            var upgrade = InternalGetUpgrade(upgradeName);
-            _currentUpgrades.Add(upgrade);
+            var upgrade = GetUpgradeInternal(upgradeName);
+            _currentUpgrades.Remove(upgrade);
         }
 
         public bool HasUpgrade(string upgradeName)
@@ -39,7 +39,7 @@ namespace Damien.UpgradeSystem
 
         public void RemoveUpgrade(string upgradeName)
         {
-            var upgrade = InternalGetUpgrade(upgradeName);
+            var upgrade = GetUpgradeInternal(upgradeName);
             var playerUpgrade = _currentUpgrades.FirstOrDefault(x => x.Name == upgrade.Name);
             if (playerUpgrade == null)
                 throw new UpgradeNotFoundException(upgradeName, "Could not remove upgrade because it is not in the current upgrades list.");
@@ -53,7 +53,7 @@ namespace Damien.UpgradeSystem
                 throw new UpgradeNotFoundException(upgradeName, "Could not find a upgrade matching the name that was provided.");
             return upgrade.ToModel();
         }
-        internal ScriptableObjects.Upgrade InternalGetUpgrade(string upgradeName)
+        internal ScriptableObjects.Upgrade GetUpgradeInternal(string upgradeName)
         {
             var upgrade = _upgrades.FirstOrDefault(upgrade => upgrade.Name == upgradeName);
             if (upgrade == null)
@@ -64,6 +64,10 @@ namespace Damien.UpgradeSystem
         public List<Upgrade> GetCurrentUpgrades()
         {
             return _currentUpgrades.ToModel();
+        }
+        internal List<ScriptableObjects.Upgrade> GetCurrentUpgradesInternal()
+        {
+            return _currentUpgrades;
         }
 
         public List<Upgrade> GetAllUpgrades()

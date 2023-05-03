@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Damien.UpgradeSystem
 {
     [System.Serializable]
-    internal class StatisticController
+    public class StatisticController
     {
         private readonly UpgradeController _upgradeController;
         private List<ScriptableObjects.Statistic> _statistics;
@@ -46,24 +46,27 @@ namespace Damien.UpgradeSystem
         {
             var sum = _upgradeController.GetCurrentUpgrades()
                 .Where(upgrade => upgrade.Statistics.Any(statistic => statistic.Name == statisticName))
-                .SelectMany(upgrade => upgrade.Statistics).Sum(x => x.Amount);
+                .SelectMany(upgrade => upgrade.Statistics).Sum(x => x.Amount ?? 0);
             return sum;
         }
 
-        internal Dictionary<ScriptableObjects.Statistic, int> GetCurrentStatisticValues()
+        internal Dictionary<Statistic, int> GetCurrentStatisticValues()
         {
-            var upgrades = _upgradeController.GetCurrentUpgrades();
-            var statisticResults = upgrades
-    .SelectMany(obj => obj.Statistics)
-    .GroupBy(statistic => statistic.Name)
-    .ToDictionary(
-        group => GetStatistic(group.Key),
-        group => group.Sum(statistic => statistic.Amount)
-                 + _buffs.Where(x => x.Key == group.Key).Sum(x => x.Value ?? 0)
-                 - _debuffs.Where(x => x.Key == group.Key).Sum(x => x.Value ?? 0)
-    );
+            var test = _buffs.Where(x => x.Key == "Apple").Sum(x => x.Value ?? 0);
+            Dictionary<string, int> results = new Dictionary<string, int>();
 
-            return statisticResults;
+            var upgrades = _upgradeController.GetCurrentUpgradesInternal();
+            foreach (var upgrade in upgrades)
+            {
+                foreach(var statistic in upgrade.Statistics)
+                {
+                    if (results.ContainsKey(statistic.Statistic.Name) == false)
+                        results.Add(statistic.Statistic.Name, 0);
+                    results[statistic.Statistic.Name] += statistic.Amount;
+                }
+            }
+            var statisticResults = results.ToDictionary(result => GetStatistic(result.Key), result => result.Value);
+            return statisticResults.ToModel();
         }
 
         internal ScriptableObjects.Statistic GetStatistic(string statisticName)

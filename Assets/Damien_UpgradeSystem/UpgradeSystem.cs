@@ -14,7 +14,9 @@ namespace Damien.UpgradeSystem
     public class UpgradeSystem : MonoBehaviour
     {
         #region Private Variables
+        [SerializeField]
         private UpgradeController _upgradeController;
+        [SerializeField]
         private StatisticController _statisticController;
         #endregion
 
@@ -29,12 +31,12 @@ namespace Damien.UpgradeSystem
 
         public List<Upgrade> GetAllUpgrades()
         {
-            return _upgradeController.GetAllUpgrades().ToModel();
+            return _upgradeController.GetAllUpgrades();
         }
 
         public List<Upgrade> GetCurrentUpgrades()
         {
-            return _upgradeController.GetCurrentUpgrades().ToModel();
+            return _upgradeController.GetCurrentUpgrades();
         }
 
         public void GiveUpgrade(string upgradeName)
@@ -49,7 +51,7 @@ namespace Damien.UpgradeSystem
 
         public Dictionary<Statistic,int> GetStatistics()
         {
-            return _statisticController.GetCurrentStatisticValues().ToModel() ;
+            return _statisticController.GetCurrentStatisticValues() ;
         }
 
         public int GetStatisticValue(string statisticName)

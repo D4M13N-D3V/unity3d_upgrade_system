@@ -16,7 +16,7 @@ namespace Damien.UpgradeSystem
         {
             return upgrades.Select(upgrade => new Upgrade(upgrade.Name, upgrade.Description, upgrade.Icon, upgrade.Statistics.ToModel())).ToList();
         }
-        public static Dictionary<Statistic, int> ToModel(this Dictionary<ScriptableObjects.Statistic,int> statistics)
+        public static Dictionary<Statistic, int> ToModel(this Dictionary<ScriptableObjects.Statistic, int> statistics)
         {
             var result = new Dictionary<Statistic, int>(statistics.Count());
             foreach (var kvp in statistics)
