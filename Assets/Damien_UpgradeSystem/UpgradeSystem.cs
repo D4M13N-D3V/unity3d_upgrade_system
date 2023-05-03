@@ -13,14 +13,6 @@ namespace Damien.UpgradeSystem
 {
     public class UpgradeSystem : MonoBehaviour
     {
-        #region Singleton
-        public static UpgradeSystem Instance;
-        public void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-        }
-        #endregion
 
         #region Private Variables
         private UpgradeController _upgradeController;
