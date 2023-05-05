@@ -7,7 +7,7 @@ namespace Damien.UpgradeSystem.Example
 {
     public class DebugMenu : MonoBehaviour
     {
-        public UpgradeSystem UpgradeSystem;
+        public UpgradeManager UpgradeSystem;
         public Transform Content;
         public GameObject Panel;
 
